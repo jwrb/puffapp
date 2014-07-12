@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -35,6 +36,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -57,7 +59,8 @@ public class DeviceControlActivity extends Activity implements OnTouchListener {
     private TextView isSerial;
     private TextView mConnectionState;
     private TextView mDataField;
-    private TextView frontUp, frontDown, rearUp, rearDown;
+    private TextView frontUp, frontDown;
+    private Button rearUp, rearDown;
     private int commandNum;
     private String mDeviceName;
     private String mDeviceAddress;
@@ -145,8 +148,8 @@ public class DeviceControlActivity extends Activity implements OnTouchListener {
 
         frontUp = (TextView) findViewById(R.id.frontUp);
         frontDown = (TextView) findViewById(R.id.frontDown);
-        rearUp = (TextView) findViewById(R.id.rearUp);
-        rearDown = (TextView) findViewById(R.id.rearDown);
+        rearUp = (Button) findViewById(R.id.rearUp);
+        rearDown = (Button) findViewById(R.id.rearDown);
 
         frontUp.setOnTouchListener(this);
         frontDown.setOnTouchListener(this);
@@ -272,18 +275,20 @@ public class DeviceControlActivity extends Activity implements OnTouchListener {
             return true;
         }
         else if (v.getId() == R.id.rearUp && event.getAction() == MotionEvent.ACTION_DOWN) {
-            commandNum = 3;
+            commandNum = 1;
             initializeValves();
+            rearUp.setBackgroundColor(Color.WHITE);
             return true;
         }
         else if (v.getId() == R.id.rearDown && event.getAction() == MotionEvent.ACTION_DOWN) {
-            commandNum = 4;
+            commandNum = 2;
             initializeValves();
             return true;
         }
         else if (event.getAction() == MotionEvent.ACTION_UP) {
             commandNum = 0;
             initializeValves();
+            rearUp.setBackgroundResource(R.drawable.styled);
             return true;
         }
         else {

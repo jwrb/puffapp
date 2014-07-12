@@ -19,7 +19,8 @@
     android:gravity="center"
     android:orientation="vertical"
     android:focusableInTouchMode="true"
-    android:background="#33CCFF">
+    android:background="#33CCFF"
+    android:weightSum="1">
     <LinearLayout android:orientation="horizontal"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
@@ -105,30 +106,21 @@
         android:textAlignment="center"
         android:textSize="20dp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
+    <Button
+        android:layout_width="211dp"
+        android:layout_height="wrap_content"
         android:text="Rear Up"
         android:id="@+id/rearUp"
-        android:layout_gravity="center"
-        android:background="#ffffff"
-        android:gravity="center"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="10dp"
-        android:textAlignment="center"
-        android:textSize="20dp" />
+        android:background="@drawable/styled"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.14" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
+    <Button
+        android:layout_width="211dp"
+        android:layout_height="wrap_content"
         android:text="Rear Down"
         android:id="@+id/rearDown"
-        android:layout_gravity="center"
-        android:background="#ffffff"
-        android:gravity="center"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:textAlignment="center"
-        android:textSize="20dp" />
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.14" />
+
 </LinearLayout>
