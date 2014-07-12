@@ -228,7 +228,7 @@ public class DeviceControlActivity extends Activity implements OnTouchListener {
     private void displayData(String data) {
 
         if (data != null) {
-            mDataField.setText(data);
+            //mDataField.setText(data);
         }
     }
 
@@ -267,30 +267,35 @@ public class DeviceControlActivity extends Activity implements OnTouchListener {
         if(v.getId() == R.id.frontUp && event.getAction() == MotionEvent.ACTION_DOWN) {
             commandNum = 1;
             initializeValves();
+            mDataField.setText("Front going up");
             frontUp.setBackgroundResource(R.drawable.up_arrow_selected);
             return true;
         }
         else if (v.getId() == R.id.frontDown && event.getAction() == MotionEvent.ACTION_DOWN) {
             commandNum = 2;
             initializeValves();
+            mDataField.setText("Front going down");
             frontDown.setBackgroundResource(R.drawable.down_arrow_selected);
             return true;
         }
         else if (v.getId() == R.id.rearUp && event.getAction() == MotionEvent.ACTION_DOWN) {
             commandNum = 1;
             initializeValves();
+            mDataField.setText("Rear going up");
             rearUp.setBackgroundResource(R.drawable.up_arrow_selected);
             return true;
         }
         else if (v.getId() == R.id.rearDown && event.getAction() == MotionEvent.ACTION_DOWN) {
             commandNum = 2;
             initializeValves();
+            mDataField.setText("Rear going down");
             rearDown.setBackgroundResource(R.drawable.down_arrow_selected);
             return true;
         }
         else if (event.getAction() == MotionEvent.ACTION_UP) {
             commandNum = 0;
             initializeValves();
+            mDataField.setText("All valves off");
             frontUp.setBackgroundResource(R.drawable.up_arrow);
             frontDown.setBackgroundResource(R.drawable.down_arrow);
             rearUp.setBackgroundResource(R.drawable.up_arrow);

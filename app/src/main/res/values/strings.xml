@@ -2,10 +2,10 @@
 <resources>
     <string name="app_name">Puff</string>
     <string name="ble_not_supported">BLE is not supported</string>
-    <string name="label_data">Data:</string>
+    <string name="label_data">Status:</string>
     <string name="label_device_address">Device address:</string>
     <string name="label_state">State:</string>
-    <string name="no_data">No data</string>
+    <string name="no_data">All valves off</string>
     <string name="connected">You are connected!</string>
     <string name="disconnected">You are disconnected :(</string>
     <string name="title_devices">BLE Device Scan</string>
