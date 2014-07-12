@@ -267,28 +267,34 @@ public class DeviceControlActivity extends Activity implements OnTouchListener {
         if(v.getId() == R.id.frontUp && event.getAction() == MotionEvent.ACTION_DOWN) {
             commandNum = 1;
             initializeValves();
+            frontUp.setBackgroundResource(R.drawable.up_arrow_selected);
             return true;
         }
         else if (v.getId() == R.id.frontDown && event.getAction() == MotionEvent.ACTION_DOWN) {
             commandNum = 2;
             initializeValves();
+            frontDown.setBackgroundResource(R.drawable.down_arrow_selected);
             return true;
         }
         else if (v.getId() == R.id.rearUp && event.getAction() == MotionEvent.ACTION_DOWN) {
             commandNum = 1;
             initializeValves();
-            rearUp.setBackgroundColor(Color.WHITE);
+            rearUp.setBackgroundResource(R.drawable.up_arrow_selected);
             return true;
         }
         else if (v.getId() == R.id.rearDown && event.getAction() == MotionEvent.ACTION_DOWN) {
             commandNum = 2;
             initializeValves();
+            rearDown.setBackgroundResource(R.drawable.down_arrow_selected);
             return true;
         }
         else if (event.getAction() == MotionEvent.ACTION_UP) {
             commandNum = 0;
             initializeValves();
-            rearUp.setBackgroundResource(R.drawable.styled);
+            frontUp.setBackgroundResource(R.drawable.up_arrow);
+            frontDown.setBackgroundResource(R.drawable.down_arrow);
+            rearUp.setBackgroundResource(R.drawable.up_arrow);
+            rearDown.setBackgroundResource(R.drawable.down_arrow);
             return true;
         }
         else {
