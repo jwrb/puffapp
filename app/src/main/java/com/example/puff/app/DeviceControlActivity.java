@@ -17,6 +17,7 @@
 package com.example.puff.app;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.bluetooth.BluetoothGattCharacteristic;
@@ -35,9 +36,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.content.DialogInterface;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,8 +63,8 @@ public class DeviceControlActivity extends Activity implements OnTouchListener {
     private TextView isSerial;
     private TextView mConnectionState;
     private TextView mDataField;
-    private TextView frontUp, frontDown;
-    private Button rearUp, rearDown;
+    private TextView frontUp, frontDown, rearUp, rearDown;
+    private Button allDown;
     private int commandNum;
     private String mDeviceName;
     private String mDeviceAddress;
@@ -148,13 +152,23 @@ public class DeviceControlActivity extends Activity implements OnTouchListener {
 
         frontUp = (TextView) findViewById(R.id.frontUp);
         frontDown = (TextView) findViewById(R.id.frontDown);
-        rearUp = (Button) findViewById(R.id.rearUp);
-        rearDown = (Button) findViewById(R.id.rearDown);
+        rearUp = (TextView) findViewById(R.id.rearUp);
+        rearDown = (TextView) findViewById(R.id.rearDown);
+        allDown = (Button) findViewById(R.id.allDown);
 
         frontUp.setOnTouchListener(this);
         frontDown.setOnTouchListener(this);
         rearUp.setOnTouchListener(this);
         rearDown.setOnTouchListener(this);
+        allDown.setOnTouchListener(this);
+
+        allDown.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Confirmation Alert
+                allDownAlert();
+            }
+        });
 
 
      
@@ -162,6 +176,33 @@ public class DeviceControlActivity extends Activity implements OnTouchListener {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+    }
+
+    private void allDownAlert() {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch(which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        //Yes button clicked
+                        commandNum = 9;
+                        initializeValves();
+                        mDataField.setText("Going all down");
+                        allDown.setBackgroundResource(R.drawable.down_arrow);
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //Button no clicked, do nothing
+                        Toast.makeText(DeviceControlActivity.this, "No Clicked",
+                                Toast.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("All down selected. Are you sure?")
+                .setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
     }
 
     @Override
@@ -262,6 +303,7 @@ public class DeviceControlActivity extends Activity implements OnTouchListener {
         
     }
 
+    //ON TOUCH EVENTS FOR ALL BUTTONS
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if(v.getId() == R.id.frontUp && event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -279,28 +321,35 @@ public class DeviceControlActivity extends Activity implements OnTouchListener {
             return true;
         }
         else if (v.getId() == R.id.rearUp && event.getAction() == MotionEvent.ACTION_DOWN) {
-            commandNum = 1;
+            commandNum = 3;
             initializeValves();
             mDataField.setText("Rear going up");
             rearUp.setBackgroundResource(R.drawable.up_arrow_selected);
             return true;
         }
         else if (v.getId() == R.id.rearDown && event.getAction() == MotionEvent.ACTION_DOWN) {
-            commandNum = 2;
+            commandNum = 4;
             initializeValves();
             mDataField.setText("Rear going down");
             rearDown.setBackgroundResource(R.drawable.down_arrow_selected);
             return true;
         }
+        else if (v.getId() == R.id.allDown && event.getAction() == MotionEvent.ACTION_DOWN) {
+            allDown.setBackgroundResource(R.drawable.down_arrow_selected);
+            return false;
+        }
         else if (event.getAction() == MotionEvent.ACTION_UP) {
-            commandNum = 0;
-            initializeValves();
-            mDataField.setText("All valves off");
-            frontUp.setBackgroundResource(R.drawable.up_arrow);
-            frontDown.setBackgroundResource(R.drawable.down_arrow);
-            rearUp.setBackgroundResource(R.drawable.up_arrow);
-            rearDown.setBackgroundResource(R.drawable.down_arrow);
-            return true;
+            if (v.getId() == R.id.frontUp || v.getId() == R.id.frontDown || v.getId() == R.id.rearUp || v.getId() == R.id.rearDown) {
+                commandNum = 0;
+                initializeValves();
+                mDataField.setText("All valves off");
+                frontUp.setBackgroundResource(R.drawable.up_arrow);
+                frontDown.setBackgroundResource(R.drawable.down_arrow);
+                rearUp.setBackgroundResource(R.drawable.up_arrow);
+                rearDown.setBackgroundResource(R.drawable.down_arrow);
+                return true;
+            }
+            return false;
         }
         else {
             return false;
@@ -316,6 +365,7 @@ public class DeviceControlActivity extends Activity implements OnTouchListener {
         return intentFilter;
     }
 
+    //METHOD FOR VALVE COMMAND SENDING
     public void initializeValves() {
     	 String str = commandNum + "\n";
          Log.d(TAG, "Sending result=" + str);
@@ -326,5 +376,5 @@ public class DeviceControlActivity extends Activity implements OnTouchListener {
 			mBluetoothLeService.setCharacteristicNotification(characteristicRX,true);
 		 }
     }
-   
+
 }
